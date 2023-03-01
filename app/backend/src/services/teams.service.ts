@@ -9,6 +9,11 @@ class TeamService {
     const teams = await this.model.findAll();
     return teams as Team[];
   }
+
+  public async getById(id: number): Promise<Team> {
+    const teamsZone = await this.model.findByPk(id);
+    return teamsZone as Team;
+  }
 }
 
 export default TeamService;

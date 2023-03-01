@@ -49,31 +49,6 @@ describe('Deve acessar o endpoint /teams', () => {
     }
   ]
 
-  // beforeEach(async () => {
-  //   sinon
-  //     .stub(Team, "findAll")
-  //     .resolves(
-  //       [
-  //         {
-  //           id:1,
-  //           teamName: 'Avai/Kindermann'
-  //         },
-  //         {
-  //           id:2,
-  //           teamName: 'Bahia'
-  //         },
-  //         {
-  //           id:3,
-  //           teamName: 'Botafogo'
-  //         }
-  //       ] as Team[]);
-      
-  // });
-
-  // afterEach(()=>{
-  //   (Team.findAll as sinon.SinonStub).restore();
-  // })
-
   it('Deve acessar GET teams', async () => {
     sinon.stub(Model, 'findAll').resolves(TeamsMoch);
 
