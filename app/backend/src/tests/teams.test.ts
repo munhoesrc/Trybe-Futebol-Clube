@@ -2,9 +2,11 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
+import { Model } from 'sequelize';
 
 import { app } from '../app';
 import Team from '../database/models/TeamModel';
+import TeamService from '../services/teams.service';
 
 import { Response } from 'superagent';
 
@@ -17,54 +19,81 @@ describe('Deve acessar o endpoint /teams', () => {
    * Exemplo do uso de stubs com tipos
    */
 
-  let chaiHttpResponse: Response;
-  const teamsMoch = [
-    {
+  const TeamsMoch = [
+    new Team({
       id:1,
+      teamName: 'Avai/Kindermann'
+    }),
+    new Team({
+      id:2,
+      teamName: 'Bahia'
+    }),
+    new Team({
+        id:3,
+        teamName: 'Botafogo'
+    }),
+  ]
+
+  const Control = [
+    {
+      id: 1,
       teamName: 'Avai/Kindermann'
     },
     {
-      id:2,
+      id: 2,
       teamName: 'Bahia'
     },
     {
-      id:3,
+      id: 3,
       teamName: 'Botafogo'
     }
   ]
 
-  beforeEach(async () => {
-    sinon
-      .stub(Team, "findAll")
-      .resolves(
-        [
-          {
-            id:1,
-            teamName: 'Avai/Kindermann'
-          },
-          {
-            id:2,
-            teamName: 'Bahia'
-          },
-          {
-            id:3,
-            teamName: 'Botafogo'
-          }
-        ] as Team[]);
+  // beforeEach(async () => {
+  //   sinon
+  //     .stub(Team, "findAll")
+  //     .resolves(
+  //       [
+  //         {
+  //           id:1,
+  //           teamName: 'Avai/Kindermann'
+  //         },
+  //         {
+  //           id:2,
+  //           teamName: 'Bahia'
+  //         },
+  //         {
+  //           id:3,
+  //           teamName: 'Botafogo'
+  //         }
+  //       ] as Team[]);
       
-  });
+  // });
 
-  afterEach(()=>{
-    (Team.findAll as sinon.SinonStub).restore();
-  })
+  // afterEach(()=>{
+  //   (Team.findAll as sinon.SinonStub).restore();
+  // })
 
-  it('Deve retornar todos os times', async () => {
-    chaiHttpResponse = await chai
+  it('Deve acessar GET teams', async () => {
+    sinon.stub(Model, 'findAll').resolves(TeamsMoch);
+
+    const getCall = await chai
       .request(app)
       .get('/teams');
 
-    expect(chaiHttpResponse.status).to.be.eq(200);
-    expect(chaiHttpResponse.body).to.be.an('array');
-    expect(chaiHttpResponse.body).to.deep.equal;
+    expect(getCall.status).to.be.eq(200);
+    expect(getCall.body).to.be.an('array');
+    expect(getCall.body).to.deep.eq(Control);
   });
+
+  it('Deve acessar GET teams/:id', async () => {
+    sinon.stub(Model, 'findByPk').resolves(TeamsMoch[0]);
+
+    const getIdCall = await chai
+      .request(app)
+      .get('/teams/1');
+
+    expect(getIdCall.status).to.be.eq(200);
+    expect(getIdCall.body).to.be.eq(Control[0]);
+  })
 });
