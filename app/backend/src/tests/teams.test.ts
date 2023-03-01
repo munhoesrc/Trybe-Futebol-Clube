@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Testando endpoint /teams', () => {
+describe('Deve acessar o endpoint /teams', () => {
   /**
    * Exemplo do uso de stubs com tipos
    */
@@ -58,7 +58,7 @@ describe('Testando endpoint /teams', () => {
     (Team.findAll as sinon.SinonStub).restore();
   })
 
-  it('Se retorna todos os times', async () => {
+  it('Deve retornar todos os times', async () => {
     chaiHttpResponse = await chai
       .request(app)
       .get('/teams');
