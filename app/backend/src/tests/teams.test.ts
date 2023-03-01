@@ -69,6 +69,6 @@ describe('Deve acessar o endpoint /teams', () => {
       .get('/teams/1');
 
     expect(getIdCall.status).to.be.eq(200);
-    expect(getIdCall.body).to.be.eq(Control[0]);
+    expect(getIdCall.body).to.deep.eq(Control[0]);
   })
 });
