@@ -1,0 +1,1 @@
+import userRoutes from './user.route';

@@ -6,9 +6,9 @@ import { Model } from 'sequelize';
 
 import { app } from '../app';
 import Team from '../database/models/TeamModel';
-import TeamService from '../services/teams.service';
+// import TeamService from '../services/teams.service';
 
-import { Response } from 'superagent';
+// import { Response } from 'superagent';
 
 chai.use(chaiHttp);
 
