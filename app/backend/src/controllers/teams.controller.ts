@@ -1,18 +1,27 @@
-import { Request, Response } from 'express';
+import { error } from 'console';
+import { NextFunction, Request, Response } from 'express';
 import TeamService from '../services/teams.service';
 
 class TeamController {
   private service: TeamService = new TeamService();
 
-  public async findAll(req: Request, res: Response): Promise<void> {
-    const teamstfc = await this.service.findAll();
-    res.status(200).json(teamstfc);
+  async get(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { status, message } = await this.service.get();
+      res.status(status).json(message);
+    } catch {
+      next(error);
+    }
   }
 
-  public async getById(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
-    const body = await this.service.getById(Number(id));
-    res.status(200).json(body);
+  async getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { status, message } = await this.service.getById(+id);
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 
