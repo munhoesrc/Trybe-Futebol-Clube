@@ -4,12 +4,12 @@ import UserService from '../services/user.service';
 class UserController {
   private service: UserService = new UserService();
 
-  async longin(req: Request, res: Response, next: NextFunction) {
+  async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { status, message } = await this.service.longin(req.body);
+      const { status, message } = await this.service.login(req.body);
       res.status(status).json(message);
-    } catch (erro) {
-      next(erro);
+    } catch (err) {
+      next(err);
     }
   }
 }

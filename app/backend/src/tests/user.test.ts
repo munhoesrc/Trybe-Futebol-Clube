@@ -19,7 +19,7 @@ describe('Deve acessar o endpoint /login', () => {
 
   beforeEach(sinon.restore);
 
-  const UserMoch = [
+  const userMoch = [
     new User({
       id: 7,
       username: 'Username',
@@ -41,7 +41,7 @@ describe('Deve acessar o endpoint /login', () => {
 
   it('Deve testar POST user login', async () => {
     const body = { email: 'email@email.com', password: 'password'}
-    sinon.stub(Model, 'findAll').resolves([UserMoch[0]]);
+    sinon.stub(Model, 'findAll').resolves([userMoch[0]]);
     sinon.stub(bcrypt, 'compareSync').resolves(true);
 
     const postCall = await chai

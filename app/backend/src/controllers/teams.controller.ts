@@ -1,15 +1,14 @@
-import { error } from 'console';
 import { NextFunction, Request, Response } from 'express';
 import TeamService from '../services/teams.service';
 
 class TeamController {
   private service: TeamService = new TeamService();
 
-  async get(req: Request, res: Response, next: NextFunction) {
+  async get(_req: Request, res: Response, next: NextFunction) {
     try {
       const { status, message } = await this.service.get();
       res.status(status).json(message);
-    } catch {
+    } catch (error) {
       next(error);
     }
   }

@@ -1,6 +1,6 @@
-interface Response {
+interface IResponse {
   status:number,
   message:unknown,
 }
 
-export default Response;
+export default IResponse;

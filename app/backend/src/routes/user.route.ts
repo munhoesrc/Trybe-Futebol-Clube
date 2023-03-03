@@ -6,6 +6,6 @@ const userController = new UserController();
 
 const userRoutes: IRouter = Router();
 
-userRoutes.post('/login', verifyLogin, userController.longin.bind(userController));
+userRoutes.post('/login', verifyLogin, userController.login.bind(userController));
 
 export default userRoutes;

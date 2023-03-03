@@ -3,7 +3,6 @@ import spendRouter from './routes';
 
 class App {
   public app: express.Express;
-  // private teamsTfcRoutes: TeamRoute = new TeamRoute();
 
   constructor() {
     this.app = express();
@@ -30,8 +29,13 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-    this.app.use((erro: Error, _req: express.Request, res: express.Response) => {
-      res.status(500).json(erro.message);
+    this.app.use((
+      err: Error,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction,
+    ) => {
+      res.status(500).json(err.message);
     });
   }
 
