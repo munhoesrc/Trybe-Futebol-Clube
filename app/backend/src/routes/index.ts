@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import userRoutes from './user.route';
 
-const router = Router();
-router.use(userRoutes);
+// passando a rota
+const spendRouter = Router();
+spendRouter.use(userRoutes);
 
-export default router;
+export default spendRouter;

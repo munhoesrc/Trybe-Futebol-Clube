@@ -1,9 +1,9 @@
 import * as express from 'express';
-import TeamRoute from './routes/teams.route';
+import spendRouter from './routes';
 
 class App {
   public app: express.Express;
-  private teamsTfcRoutes: TeamRoute = new TeamRoute();
+  // private teamsTfcRoutes: TeamRoute = new TeamRoute();
 
   constructor() {
     this.app = express();
@@ -16,6 +16,10 @@ class App {
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
 
+  private routes(): void {
+    this.app.use(spendRouter);
+  }
+
   private config():void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
@@ -26,14 +30,13 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use((erro: Error, _req: express.Request, res: express.Response) => {
+      res.status(500).json(erro.message);
+    });
   }
 
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
-  }
-
-  private routes(): void {
-    this.app.use('/teams', this.teamsTfcRoutes.route);
   }
 }
 

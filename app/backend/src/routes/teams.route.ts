@@ -1,23 +1,10 @@
-import { Request, Response, Router } from 'express';
+import { IRouter, Router } from 'express';
 import TeamController from '../controllers/teams.controller';
 
-class TeamRoute {
-  public route: Router;
-  private controller: TeamController = new TeamController();
+const teamController = new TeamController();
+const teamRoutes = IRouter = Router();
 
-  constructor() {
-    this.route = Router();
-    this.init();
-  }
+teamRoutes.get('/teams', teamController.get.bind(teamController));
+teamRoutes.get('/teams/:id', teamController.getById.bind(teamController));
 
-  private init(): void {
-    this.route.get('/', (req: Request, res: Response) => {
-      this.controller.findAll(req, res);
-    });
-    this.route.get('/:id', (req: Request, res: Response) => {
-      this.controller.getById(req, res);
-    });
-  }
-}
-
-export default TeamRoute;
+export default teamRoutes;
