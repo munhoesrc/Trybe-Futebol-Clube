@@ -7,7 +7,7 @@ import Team from '../database/models/TeamModel';
 class MatchesService {
   private model: ModelStatic<Matches> = Matches;
 
-  async get(): Promise<IResponse> {
+  async getAll(inProgress: string): Promise<IResponse> {
     const matches = await this.model.findAll({
       include: [
         { model: Team, as: 'homeTeam', attributes: ['teamName'] },
@@ -15,6 +15,13 @@ class MatchesService {
       ],
     });
 
+    if (inProgress === 'true') {
+      const filteredMatches = matches.filter((e) => e.inProgress);
+      return generateResponse(200, filteredMatches);
+    } if (inProgress === 'false') {
+      const filteredMatches = matches.filter((e) => !e.inProgress);
+      return generateResponse(200, filteredMatches);
+    }
     return generateResponse(200, matches);
   }
 }
