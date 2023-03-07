@@ -30,6 +30,13 @@ class MatchesService {
     await this.model.update({ inProgress: false }, { where: { id } });
     return generateResponse(200, { message: msg });
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async doingUpdate(id: number, body: any): Promise<IResponse> {
+    const msg = 'Updated';
+    await this.model.update({ ...body }, { where: { id } });
+    return generateResponse(200, { message: msg });
+  }
 }
 
 export default MatchesService;

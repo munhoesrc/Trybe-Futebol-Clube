@@ -23,6 +23,16 @@ class MatchesController {
       next(err);
     }
   }
+
+  async doingUpdate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { params: { id } } = req;
+      const { status, message } = await this.service.doingUpdate(Number(id), req.body);
+      res.status(status).json(message);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default MatchesController;
