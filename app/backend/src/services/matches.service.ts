@@ -24,6 +24,12 @@ class MatchesService {
     }
     return generateResponse(200, matches);
   }
+
+  async finish(id: number): Promise<IResponse> {
+    const msg = 'Finished';
+    await this.model.update({ inProgress: false }, { where: { id } });
+    return generateResponse(200, { message: msg });
+  }
 }
 
 export default MatchesService;

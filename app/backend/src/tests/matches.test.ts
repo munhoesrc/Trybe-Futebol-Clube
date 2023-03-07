@@ -5,7 +5,7 @@ import chaiHttp = require('chai-http');
 import { Model } from 'sequelize';
 
 import { app } from '../app';
-import Matche from '../database/models/MatchesModel';
+import Matches from '../database/models/MatchesModel';
 
 
 chai.use(chaiHttp);
@@ -19,7 +19,7 @@ describe('Deve acessar o endpoint /matches', () => {
 });
 
   const MatchesMoch = [
-    new Matche({
+    new Matches({
       id: 1,
       homeTeamId: 1,
       homeTeamGoals: 3,
@@ -27,7 +27,7 @@ describe('Deve acessar o endpoint /matches', () => {
       awayTeamGoals: 2,
       inProgress: true
     }),
-    new Matche({
+    new Matches({
       id: 2,
       homeTeamId: 3,
       homeTeamGoals: 7,
