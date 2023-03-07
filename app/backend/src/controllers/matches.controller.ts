@@ -33,6 +33,15 @@ class MatchesController {
       next(err);
     }
   }
+
+  async newMatch(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { status, message } = await this.service.newMatch(req.body);
+      res.status(status).json(message);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default MatchesController;

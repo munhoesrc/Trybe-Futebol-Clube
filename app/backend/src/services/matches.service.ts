@@ -37,6 +37,12 @@ class MatchesService {
     await this.model.update({ ...body }, { where: { id } });
     return generateResponse(200, { message: msg });
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async newMatch(body: any): Promise<IResponse> {
+    const createdMatch = await this.model.create({ ...body });
+    return generateResponse(201, createdMatch);
+  }
 }
 
 export default MatchesService;
