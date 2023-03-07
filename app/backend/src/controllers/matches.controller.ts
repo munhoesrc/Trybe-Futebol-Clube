@@ -16,10 +16,10 @@ class MatchesController {
 
   async finish(req: Request, res: Response, next: NextFunction) {
     try {
-      const { status, message } = await finish(Number(req.params.id), this.service, res);
+      const { params: { id } } = req;
+      const { status, message } = await this.service.finish(Number(id));
       res.status(status).json(message);
     } catch (err) {
-      // console.error(err);
       next(err);
     }
   }
