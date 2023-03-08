@@ -59,6 +59,7 @@ describe('Deve acessar o endpoint /teams', () => {
   });
 
   it('Deve acessar GET teams/:id', async () => {
+    sinon.restore();
     sinon.stub(Model, 'findByPk').resolves(TeamsMoch[0]);
 
     const getIdCall = await chai
