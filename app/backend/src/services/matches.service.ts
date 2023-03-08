@@ -1,5 +1,6 @@
 import { ModelStatic } from 'sequelize';
 import IResponse from '../interfaces/Response';
+import IMatch from '../interfaces/Match';
 import { generateResponse, generateResponseError } from '../assets/generateResponse';
 import Matches from '../database/models/MatchesModel';
 import Team from '../database/models/TeamModel';
@@ -38,8 +39,7 @@ class MatchesService {
     return generateResponse(200, { message: msg });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async newMatch(body: any): Promise<IResponse | undefined> {
+  async newMatch(body: IMatch): Promise<IResponse> {
     const away = body.awayTeamId;
     const home = body.homeTeamId;
     if (away === home) {
