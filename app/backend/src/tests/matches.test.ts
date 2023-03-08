@@ -113,4 +113,39 @@ describe('Deve acessar o endpoint /matches', () => {
     expect(response.body).to.deep.equal({ message: 'Token must be a valid token' });
   });
 
+  it('Deve testar que não é possível criar uma partida com duas equipes iguais', async () => {
+    const requestBody = {
+      team1: 'Time A',
+      team2: 'Time A'
+    };
+  
+    sinon.stub(Model, 'create').resolves(MatchesMoch[1]);
+  
+    const response = await chai
+      .request(app)
+      .post('/matches')
+      .send(requestBody);
+  
+    expect(response.status).to.equal(422);
+    expect(response.body).to.deep.equal({
+      message: 'It is not possible to create a match with two equal teams'});
+  });
+
+    it('Deve testar caso não exista time com esse id', async () => {
+        const requestBody = {
+          team1Id: 999,
+          team2Id: 888
+        };
+      
+        sinon.stub(Model, 'findByPk').resolves(null);
+        sinon.stub(Model, 'create').resolves(MatchesMoch[1]);
+      
+        const response = await chai
+          .request(app)
+          .post('/matches')
+          .send(requestBody);
+      
+      expect(response.status).to.equal(404);
+      expect(response.body).to.deep.equal({ message: 'There is no team with such id!' });
+      });
 });
