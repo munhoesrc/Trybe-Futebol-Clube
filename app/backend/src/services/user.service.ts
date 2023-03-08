@@ -4,7 +4,7 @@ import User from '../database/models/UserModel';
 import ILogin from '../interfaces/Login';
 import IResponse from '../interfaces/Response';
 import generateToken from '../JWT/JWT';
-import { generateResponse, generateResponseError } from '../assets/generateResponse';
+import { generateResponse, generateError } from '../assets/generateResponse';
 import { testValidation } from './validations/inputs';
 
 class UserService {
@@ -15,11 +15,11 @@ class UserService {
     const user = allusers.find((element) => element.email === body.email);
 
     const error = testValidation(body);
-    if (error) return generateResponseError(401, 'Invalid email or password');
+    if (error) return generateError(401, 'Invalid email or password');
 
     const checking = bcrypt.compareSync(body.password, user?.password || '_');
 
-    if (!user || !checking) return generateResponseError(401, 'Invalid email or password');
+    if (!user || !checking) return generateError(401, 'Invalid email or password');
 
     const { id, email, role, username } = user;
     const token = generateToken({ id, email, role, username });

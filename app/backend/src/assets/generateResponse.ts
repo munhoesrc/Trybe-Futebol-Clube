@@ -1,6 +1,6 @@
 const generateResponse = (status: number, message: unknown) =>
   ({ status, message });
-const generateResponseError = (status: number, message: unknown) =>
+const generateError = (status: number, message: unknown) =>
   generateResponse(status, { message });
 
-export { generateResponse, generateResponseError };
+export { generateResponse, generateError };
