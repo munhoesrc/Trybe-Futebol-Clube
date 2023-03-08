@@ -1,6 +1,6 @@
 import { ModelStatic } from 'sequelize';
 import IResponse from '../interfaces/Response';
-import { generateResponse } from '../assets/generateResponse';
+import { generateResponse, generateResponseError } from '../assets/generateResponse';
 import Matches from '../database/models/MatchesModel';
 import Team from '../database/models/TeamModel';
 
@@ -38,10 +38,27 @@ class MatchesService {
     return generateResponse(200, { message: msg });
   }
 
+  // async newMatch(body: any): Promise<IResponse> {
+  //   const createdMatch = await this.model.create({ ...body });
+  //   return generateResponse(201, createdMatch);
+  // }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async newMatch(body: any): Promise<IResponse> {
-    const createdMatch = await this.model.create({ ...body });
-    return generateResponse(201, createdMatch);
+  async newMatch(body: any): Promise<IResponse | undefined> {
+    const away = body.awayTeamId;
+    const home = body.homeTeamId;
+    if (away === home) {
+      // eslint-disable-next-line function-paren-newline
+      return generateResponseError(
+        422, 'It is not possible to create a match with two equal teams');
+    }
+
+    const teamId1 = await this.model.findByPk(body.awayTeamId);
+    const teamId2 = await this.model.findByPk(body.homeTeamId);
+
+    if (!teamId1 || !teamId2) {
+      return generateResponseError(404, 'There is no team with such id!');
+    }
   }
 }
 
