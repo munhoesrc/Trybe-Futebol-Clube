@@ -1,6 +1,7 @@
 import { ModelStatic } from 'sequelize';
 import IResponse from '../interfaces/Response';
 import IMatch from '../interfaces/Match';
+import IUpdate from '../interfaces/Update';
 import { generateResponse, generateError } from '../assets/generateResponse';
 import Matches from '../database/models/MatchesModel';
 import Team from '../database/models/TeamModel';
@@ -32,8 +33,7 @@ class MatchesService {
     return generateResponse(200, { message: msg });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async doingUpdate(id: number, body: any): Promise<IResponse> {
+  async doingUpdate(id: number, body: IUpdate): Promise<IResponse> {
     const msg = 'Updated';
     await this.model.update({ ...body }, { where: { id } });
     return generateResponse(200, { message: msg });
