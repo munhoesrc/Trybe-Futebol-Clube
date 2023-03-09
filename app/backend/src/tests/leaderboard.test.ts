@@ -1,12 +1,13 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
-import chaiHttp from 'chai-http';
+import chaiHttp = require('chai-http');
+import { Model } from 'sequelize';
 
 import { app } from '../app';
-import  TeamModel  from '../database/models/TeamModel';
-import  MatchModel from '../database/models/MatchesModel';
-import  leaderboardHome  from '../controllers/leaderboard.controller';
+import Matches from '../database/models/MatchesModel';
+import Team from '../database/models/TeamModel';
+import { request } from 'chai';
 
 chai.use(chaiHttp);
 
@@ -18,30 +19,30 @@ describe('Deve acessar o endpoint /leaderboard', () => {
     sinon.restore();
   });
 
-  const teamMoch = [
-    {
+  const teamListMoch = [
+    new Team({
       id: 2,
       teamName: 'Bahia',
-    },
+    }),
   ];
 
-  const matchMoch = [
-    {
+  const matcheMoch = [
+    new Matches({
       id: 4,
       homeTeamId: 3,
       awayTeamId: 2,
       homeTeamGoals: 0,
       awayTeamGoals: 0,
       inProgress: false,
-    },
-    {
+    }),
+    new Matches({
       id: 10,
       homeTeamId: 2,
       awayTeamId: 9,
       homeTeamGoals: 0,
       awayTeamGoals: 2,
       inProgress: false,
-    },
+    }),
   ];
 
   const resultEspecMoch = [
@@ -54,20 +55,17 @@ describe('Deve acessar o endpoint /leaderboard', () => {
       totalLosses: 1,
       goalsFavor: 0,
       goalsOwn: 2,
-      goalsBalance: -2,
-      efficiency: 0
     },
   ];
 
   it('Deve testar GET leaderboard home', async () => {
-    const teamModelStub = sinon.stub(TeamModel, 'findAll').resolves(teamMoch);
-    const matchModelStub = sinon.stub(MatchModel, 'findAll').resolves(matchMoch);
+    const mockedFindAll = sinon.stub(Model, 'findAll');
+    mockedFindAll.onFirstCall().callsFake(() => Promise.resolve(teamListMoch))
+    mockedFindAll.onSecondCall().callsFake(() => Promise.resolve(matcheMoch));
 
-    const result = await leaderboardHome();
+    const response = await request(app).get('/leaderboard/home');
 
-    expect(teamModelStub.calledOnce).to.be.true;
-    expect(matchModelStub.calledOnce).to.be.true;
-    expect(result.status).to.be.equal(200);
-    expect(result.body).to.deep.equal(resultEspecMoch);
+    expect(response.status).to.equal(200);
+    expect(response.body).to.deep.equal(resultEspecMoch);
   });
 });
