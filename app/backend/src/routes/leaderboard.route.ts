@@ -10,4 +10,4 @@ leaderboardRoutes.get(
   leaderboardController.rankingHome.bind(leaderboardController),
 );
 
-export default leaderboardController;
+export default leaderboardRoutes;
