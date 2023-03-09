@@ -54,6 +54,23 @@ class LeaderboardService {
     });
     return generateResponse(200, result);
   }
+
+  async leaderboardAway(): Promise<IResponse> {
+    const [teams, matches] = await Promise.all([
+      this.team.findAll(),
+      this.matche.findAll({ where: { inProgress: false } }),
+    ]);
+
+    const result: ILeaderboard[] = [];
+
+    teams.forEach((e) => {
+      const matchesByTeam = matches.filter((element) => element.awayTeamId === e.id);
+      const resultes = generateResults(matchesByTeam);
+
+      result.push(ranking(e, resultes, matchesByTeam));
+    });
+    return generateResponse(200, result);
+  }
 }
 
 export default LeaderboardService;

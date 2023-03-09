@@ -10,4 +10,9 @@ leaderboardRoutes.get(
   leaderboardController.rankingHome.bind(leaderboardController),
 );
 
+leaderboardRoutes.get(
+  '/leaderboard/away',
+  leaderboardController.leaderboardAway.bind(leaderboardController),
+);
+
 export default leaderboardRoutes;
